@@ -12,3 +12,12 @@ const hideHintSentenceIfExists = () => {
     hintSentence.style.display = 'none';
   } 
 }
+
+chrome.runtime.onMessage.addListener(
+  (request, sender, sendResponse) => {
+    if (request.message === "clicked_browser_action" ) {
+      console.log('hello');
+      hideHintSentenceIfExists();
+    }
+  }
+);
