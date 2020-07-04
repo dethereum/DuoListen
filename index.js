@@ -18,29 +18,39 @@ const hideHintSentenceIfExists = () => {
   } 
 }
 
-  // *Who* to observe for changes (the 'submit' button)
-  let targetNode = null;
-  // *When* to fire
-  const observerOptions = {
-    attributes: true,
-  }
+// *Who* to observe for changes (the 'submit' button)
+let targetNode = null;
+// *When* to fire
+const observerOptions = {
+  attributes: true,
+}
 
-  // Invoking
-  const observer = new MutationObserver(hideHintSentenceIfExists);
-  const attachObserverToNode = () => {
-    targetNode = document.querySelector('[data-test="player-next"]');
-    if (targetNode === null) {
-      setTimeout(attachObserverToNode, 1000);
+// Invoking
+const observer = new MutationObserver(hideHintSentenceIfExists);
+const attachObserverToNode = () => {
+  alert('Start your engines! 🏎')
+  targetNode = document.querySelector('[data-test="player-next"]');
+  if (targetNode === null) {
+    setTimeout(attachObserverToNode, 1000);
+  } else {
+    observer.observe(targetNode, observerOptions);
+  }
+};
+
+// Poll for change in address
+let oldPathname = null;
+setInterval(() => {
+  const curPathname = window.location.pathname;
+
+  if (oldPathname !== curPathname) {
+    oldPathname = window.location.pathname;
+
+    const isSkill = curPathname.indexOf('/skill') !== -1;
+    if (isSkill) {
+      alert('Learn!');
+      attachObserverToNode();
     } else {
-      observer.observe(targetNode, observerOptions);
-    }
-  };
-  attachObserverToNode();
-
-chrome.runtime.onMessage.addListener(
-  (request, sender, sendResponse) => {
-    if (request.message === "The button has changed." ) {
-      hideHintSentenceIfExists();
+      alert('Not Learn!');
     }
   }
-);
+}, 500);
