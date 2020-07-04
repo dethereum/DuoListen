@@ -1,5 +1,3 @@
-alert("We are running!")
-
 // *What* to Do
 const hideHintSentenceIfExists = () => {
   const testNames = {
