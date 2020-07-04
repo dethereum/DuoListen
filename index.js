@@ -9,8 +9,11 @@ const hideHintSentenceIfExists = () => {
   
   if (hasTranslateTest) {
     const hintSentence = document.querySelector(testNames.hintSentence);
-    if (hintSentence !== null) { 
-      hintSentence.innerHTML = 'Translate what you hear. No hints! 🙈)';
+    if (
+      hintSentence !== null // if exists
+      && hintSentence.parentElement.children.length === 2 // and has a sibling (the audio button)
+      ) { 
+      hintSentence.innerHTML = 'Translate what you hear. No hints! 🙈';
     }
   } 
 }

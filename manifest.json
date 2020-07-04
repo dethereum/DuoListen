@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.duolingo.com/skill/*"
+        "https://*.duolingo.com/*"
       ],
       "js": ["index.js"]
     }
