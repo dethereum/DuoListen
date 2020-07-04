@@ -2,6 +2,7 @@
   "manifest_version": 2,
   "name": "DuoListen",
   "version": "0.1",
+  "description": "An extension that removes the hint sentence from a Duolingo.",
   "content_scripts": [
     {
       "matches": [
@@ -9,8 +10,8 @@
       ],
       "js": ["index.js"]
     }
-  ],
-  "background": {
-    "scripts": ["background.js"]
+  ],  
+  "icons": {
+    "128": "duo.png"
   }
 }
