@@ -31,6 +31,8 @@ style="
   onMouseOut="this.style.background='#00000000'"
 `;
 
+let prevHint;
+
 // *What* to Do
 const hideHintSentenceIfExists = () => {
   const selectors = {
@@ -55,9 +57,13 @@ const hideHintSentenceIfExists = () => {
         <span>Translate what you hear. No hints! 🙈</span>
         <button ${fancyButtonStyles} id="toggleHint">Peek at Hint</button>
       `;
-      const prevHint = hintSentence.innerHTML;
+
+      const hintContent = hintSentence.innerHTML;
+      // Sometimes hintContent is hintHiderEl. Don't want to save that
+      if (hintContent.trim().slice(0, 6) !== '<span>') prevHint = hintContent;
       hintSentence.innerHTML = hintHiderEl;
       document.getElementById('toggleHint').onclick = function() {
+        console.log('prev hint', prevHint, prevHint.trim().slice(0, 6));
         hintSentence.innerHTML = prevHint;
       }
 
