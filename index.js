@@ -38,8 +38,6 @@ onMouseOut="this.style.background='#00000000'"
 const newContainer = () => {
   const ctr = document.createElement('span');
   ctr.id = 'hide-hint-ctr';
-  // ctr.style.display = 'flex';
-  // ctr.style.flexDirection = 'column';
   ctr.innerHTML = `
     <span>Translate what you hear. No hints! 🙈</span>
     <button ${fancyButtonStyles} id="toggleHint">Show Hint</button>
