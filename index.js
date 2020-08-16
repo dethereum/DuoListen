@@ -13,7 +13,23 @@
  * better solution. It does not impact performance but it is ugly.
  */
 
+// * Utils and Misc Items
 
+const fancyButtonStyles = `
+style="
+  border-width: 2px 2px 4px;
+  border-style: solid;
+  border-color: #afafaf;
+  border-radius: 16px;
+  font-size: 16px;
+  color: #afafaf;
+  cursor: pointer;
+  background: #00000000;
+  padding: 6px 8px;
+  "
+  onMouseOver="this.style.background='#E5E5E5'"
+  onMouseOut="this.style.background='#00000000'"
+`;
 
 // *What* to Do
 const hideHintSentenceIfExists = () => {
@@ -22,8 +38,7 @@ const hideHintSentenceIfExists = () => {
     hintSentence: '[data-test=\'hint-sentence\']',
   }
   const hasTranslateTest = document.querySelector(selectors.translatePrompt) !== null;
-  
-  
+
   if (hasTranslateTest) {
     const hintSentence = document.querySelector(selectors.hintSentence);
 
@@ -35,8 +50,17 @@ const hideHintSentenceIfExists = () => {
     if (
       hintSentence !== null 
       && hintSentence.parentElement.children.length === 2
-      ) { 
-      hintSentence.innerHTML = 'Translate what you hear. No hints! 🙈';
+      ) {
+      const hintHiderEl = `
+        <span>Translate what you hear. No hints! 🙈</span>
+        <button ${fancyButtonStyles} id="toggleHint">Peek at Hint</button>
+      `;
+      const prevHint = hintSentence.innerHTML;
+      hintSentence.innerHTML = hintHiderEl;
+      document.getElementById('toggleHint').onclick = function() {
+        hintSentence.innerHTML = prevHint;
+      }
+
     }
   } 
 }
