@@ -13,37 +13,51 @@
  * better solution. It does not impact performance but it is ugly.
  */
 
-// * Utils and Misc Items
+ // * Globals
+let prevHint;
+let isHiding = true;
 
+// * Constants
 const fancyButtonStyles = `
 style="
-  border-width: 2px 2px 4px;
-  border-style: solid;
-  border-color: #afafaf;
-  border-radius: 16px;
-  font-size: 16px;
-  color: #afafaf;
-  cursor: pointer;
-  background: #00000000;
-  padding: 6px 8px;
-  "
-  onMouseOver="this.style.background='#E5E5E5'"
-  onMouseOut="this.style.background='#00000000'"
+border-width: 2px 2px 4px;
+border-style: solid;
+border-color: #afafaf;
+border-radius: 16px;
+font-size: 16px;
+color: #afafaf;
+cursor: pointer;
+background: #00000000;
+display: block;
+padding: 6px 8px;
+"
+onMouseOver="this.style.background='#E5E5E5'"
+onMouseOut="this.style.background='#00000000'"
 `;
 
-let prevHint;
-
-// *What* to Do
-const hideHintSentenceIfExists = () => {
-  const selectors = {
-    translatePrompt: '[data-test=\'challenge-translate-prompt\']',
+const newContainer = () => {
+  const ctr = document.createElement('span');
+  ctr.id = 'hide-hint-ctr';
+  ctr.innerHTML = `
+    <span>Translate what you hear. No hints! 🙈</span>
+    <button ${fancyButtonStyles} id="toggleHint">Show Hint</button>
+  `;
+  return ctr;
+}
+  
+  // *What* to Do
+  const hideHintSentenceIfExists = () => {
+    const selectors = {
+      translatePrompt: '[data-test=\'challenge-translate-prompt\']',
     hintSentence: '[data-test=\'hint-sentence\']',
+    hideHintText: '#hide-hint-ctr span',
+    hideHintButton: '#hide-hint-ctr button',
   }
   const hasTranslateTest = document.querySelector(selectors.translatePrompt) !== null;
 
   if (hasTranslateTest) {
     const hintSentence = document.querySelector(selectors.hintSentence);
-
+    
     // Check to see if
     // 1) the node exists and
     // 2) it has a sibling. If it does not have a sibbling, it is a translate from "native to foreign
@@ -53,19 +67,23 @@ const hideHintSentenceIfExists = () => {
       hintSentence !== null 
       && hintSentence.parentElement.children.length === 2
       ) {
-      const hintHiderEl = `
-        <span>Translate what you hear. No hints! 🙈</span>
-        <button ${fancyButtonStyles} id="toggleHint">Peek at Hint</button>
-      `;
-
-      const hintContent = hintSentence.innerHTML;
-      // Sometimes hintContent is hintHiderEl. Don't want to save that
-      if (hintContent.trim().slice(0, 6) !== '<span>') prevHint = hintContent;
-      hintSentence.innerHTML = hintHiderEl;
-      document.getElementById('toggleHint').onclick = function() {
-        console.log('prev hint', prevHint, prevHint.trim().slice(0, 6));
-        hintSentence.innerHTML = prevHint;
+        hintSentence.parentElement.appendChild(newContainer());
+        hintSentence.style.display = 'none';
+      const hideHintText = document.querySelector(selectors.hideHintText);
+      const hideHintButton = document.querySelector(selectors.hideHintButton);
+      const onToggle = () => {
+        if (isHiding) {
+          hintSentence.style.display = 'initial';
+          hideHintText.style.display = 'none';
+          hideHintButton.innerHTML = 'Hide Hint';
+        } else {
+          hintSentence.style.display = 'none';
+          hideHintText.style.display = 'initial';
+          hideHintButton.innerHTML = 'Show Hint';
+        }
+        isHiding = !isHiding;
       }
+      document.querySelector(selectors.hideHintButton).onclick = onToggle;
 
     }
   } 
