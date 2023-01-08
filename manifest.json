@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "DuoListen",
-  "version": "0.1",
-  "description": "An extension that removes the hint sentence from a Duolingo.",
+  "name": "DuoHear",
+  "version": "1.0",
+  "description": "An extension that makes training listening easier in Duolingo.",
   "content_scripts": [
     {
       "matches": [
