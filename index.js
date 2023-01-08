@@ -48,27 +48,26 @@ const newContainer = () => {
   // *What* to Do
   const hideHintSentenceIfExists = () => {
     const selectors = {
-      translatePrompt: '[data-test=\'challenge-translate-prompt\']',
-    hintSentence: '[data-test=\'hint-sentence\']',
+      translatePrompt: '[data-test=\'challenge challenge-translate\']',
+    hintSentence: '[data-test=\'hint-token\']',
     hideHintText: '#hide-hint-ctr span',
     hideHintButton: '#hide-hint-ctr button',
   }
   const hasTranslateTest = document.querySelector(selectors.translatePrompt) !== null;
 
   if (hasTranslateTest) {
-    const hintSentence = document.querySelector(selectors.hintSentence);
-    
+    const hintSentence = document.querySelector(selectors.hintSentence);   
     // Check to see if
     // 1) the node exists and
     // 2) it has a sibling. If it does not have a sibbling, it is a translate from "native to foreign
     // prompt", which does not have an audio prompt. We want "a foreign to native prompt", which has
     // an audio prompt
     if (
-      hintSentence !== null 
-      && hintSentence.parentElement.children.length === 2
+      hintSentence.parentElement !== null 
+      && hintSentence.parentElement.parentElement.children.length === 2
       ) {
-        hintSentence.parentElement.appendChild(newContainer());
-        hintSentence.style.display = 'none';
+        hintSentence.parentElement.parentElement.appendChild(newContainer());
+        hintSentence.parentElement.style.display = 'none';
       const hideHintText = document.querySelector(selectors.hideHintText);
       const hideHintButton = document.querySelector(selectors.hideHintButton);
       const onToggle = () => {
@@ -119,7 +118,9 @@ setInterval(() => {
     oldPathname = window.location.pathname;
 
     // if new page is exercise page, setup observer
-    const isSkill = curPathname.indexOf('/skill') !== -1;
+    // OLD CODE BELOW
+    // const isSkill = curPathname.indexOf('/skill') !== -1;
+    const isSkill = curPathname.indexOf('/lesson') !== -1;
     if (isSkill) attachObserverToNode();
   }
 }, 500);
